@@ -1,0 +1,20 @@
+{% extends "maat_app/base.html" %}
+
+{% block title %}Participant Login{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h2>Participant Login</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="participant_id">Participant ID:</label>
+        <input type="text" id="participant_id" name="participant_id" required>
+        <label for="experiment_id">Experiment ID:</label>
+        <input type="text" id="experiment_id" name="experiment_id" required>
+        <button type="submit">Start</button>
+    </form>
+    {% if error %}
+    <p class="error">{{ error }}</p>
+    {% endif %}
+</div>
+{% endblock %}

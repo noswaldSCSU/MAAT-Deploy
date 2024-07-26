@@ -1,0 +1,48 @@
+{% extends "maat_app/base.html" %}
+
+{% block title %}Researcher Dashboard{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h2>Researcher Dashboard</h2>
+    <a href="{% url 'create_experiment' %}" class="button">Create New Experiment</a>
+
+    <h3>Experiments</h3>
+    <ul>
+        {% for experiment in experiments %}
+        <li>
+            {{ experiment.name }}
+            <a href="{% url 'edit_experiment' experiment.id %}" class="button">Edit</a>
+            <a href="{% url 'delete_experiment' experiment.id %}" class="button">Delete</a>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h4>Participants</h4>
+    <a href="{% url 'register_participant' %}" class="button">Register New Participant</a>
+    <ul>
+        {% for participant in participants %}
+        <li>
+            {{ participant.subject_id }}
+            <a href="{% url 'edit_participant' participant.id %}" class="button">Edit</a>
+            <a href="{% url 'delete_participant' participant.id %}" class="button">Delete</a>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h5>Trials</h5>
+    <a href="{% url 'create_trial' %}" class="button">Create New Trial</a>
+    <ul>
+        {% for trial in trials %}
+        <li>
+            {{ trial.stimuli }} (Experiment: {{ trial.experiment.name }})
+            <a href="{% url 'edit_trial' trial.id %}" class="button">Edit</a>
+            <a href="{% url 'delete_trial' trial.id %}" class="button">Delete</a>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h6>Export Responses</h6>
+    <a href="{% url 'download_responses_csv' %}" class="button">Download Responses CSV</a>
+</div>
+{% endblock %}

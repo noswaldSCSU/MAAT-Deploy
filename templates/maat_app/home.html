@@ -1,0 +1,16 @@
+{% extends "maat_app/base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h2>Welcome to the MAAT Web Application</h2>
+    <p>This application allows researchers to create experiments and participants to take part in them.</p>
+    <nav>
+        <ul>
+            <li><a href="{% url 'participant_login' %}">Participant Login</a></li>
+            <li><a href="{% url 'researcher_dashboard' %}">Researcher Dashboard</a></li>
+        </ul>
+    </nav>
+</div>
+{% endblock %}

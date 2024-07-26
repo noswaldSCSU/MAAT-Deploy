@@ -1,0 +1,49 @@
+{% extends "maat_app/base.html" %}
+
+{% block title %}Experiment{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="stimulus" id="stimulus" style="font-size: {{ params.text_size }}%;">{{ stimulus }}</div>
+    <form id="response-form" method="POST" action="{% url 'save_response' %}">
+        {% csrf_token %}
+        <input type="hidden" name="response_time" id="response-time" value="">
+        <input type="hidden" name="response_key" id="response-key" value="">
+    </form>
+</div>
+
+<script>
+let startTime;
+let stimulusElement = document.getElementById('stimulus');
+
+function displayStimulus() {
+    stimulusElement.innerText = "{{ stimulus }}";
+    startTime = performance.now();
+}
+
+function captureResponse(event) {
+    const validKeys = ['Y', 'N'];
+    if (validKeys.includes(event.key.toUpperCase())) {
+        const responseTime = performance.now() - startTime;
+        document.getElementById('response-time').value = responseTime.toFixed(2);
+        document.getElementById('response-key').value = event.key.toUpperCase();
+        
+        if (event.key.toUpperCase() === 'Y') {
+            stimulusElement.style.fontSize = '{{ params.text_increase_size }}%';
+        } else if (event.key.toUpperCase() === 'N') {
+            stimulusElement.style.fontSize = '{{ params.text_decrease_size }}%';
+        }
+        
+        setTimeout(() => {
+            document.getElementById('response-form').submit();
+        }, 1000);
+    }
+}
+
+window.addEventListener('keydown', captureResponse);
+
+window.onload = function() {
+    setTimeout(displayStimulus, 1000);
+};
+</script>
+{% endblock %}

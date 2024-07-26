@@ -1,0 +1,14 @@
+{% extends "maat_app/base.html" %}
+
+{% block title %}Register Participant{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h2>Register New Participant</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="button">Register Participant</button>
+    </form>
+</div>
+{% endblock %}

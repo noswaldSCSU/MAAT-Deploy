@@ -1,0 +1,15 @@
+{% extends "maat_app/base.html" %}
+
+{% block title %}Delete Trial{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h2>Are you sure you want to delete this trial?</h2>
+    <p><strong>Stimuli:</strong> {{ trial.stimuli }}</p>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="button">Delete Trial</button>
+        <a href="{% url 'researcher_dashboard' %}" class="button">Cancel</a>
+    </form>
+</div>
+{% endblock %}
