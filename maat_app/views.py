@@ -134,6 +134,139 @@ def experiment_complete(request):
     
     return render(request, 'experiment_complete.html')
 
+# List of Experiments View
+@login_required
+def list_experiments(request):
+    experiments = Experiment.objects.all()
+    return render(request, 'list_experiments.html', {'experiments': experiments})
+
+# Configure Experiment View
+@login_required
+def configure_experiment(request, experiment_id):
+    experiment = get_object_or_404(Experiment, id=experiment_id)
+    if request.method == 'POST':
+        form = ExperimentForm(request.POST, instance=experiment)
+        if form.is_valid():
+            form.save()
+            return redirect('list_experiments')
+    else:
+        form = ExperimentForm(instance=experiment)
+    return render(request, 'configure_experiment.html', {'form': form})
+
+# Create Experiment View
+@login_required
+def create_experiment(request):
+    if request.method == 'POST':
+        form = ExperimentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('list_experiments')
+    else:
+        form = ExperimentForm()
+    return render(request, 'create_experiment.html', {'form': form})
+
+# Edit Experiment View
+@login_required
+def edit_experiment(request, experiment_id):
+    experiment = get_object_or_404(Experiment, id=experiment_id)
+    if request.method == 'POST':
+        form = ExperimentForm(request.POST, instance=experiment)
+        if form.is_valid():
+            form.save()
+            return redirect('list_experiments')
+    else:
+        form = ExperimentForm(instance=experiment)
+    return render(request, 'edit_experiment.html', {'form': form})
+
+# Delete Experiment View
+@login_required
+def delete_experiment(request, experiment_id):
+    experiment = get_object_or_404(Experiment, id=experiment_id)
+    if request.method == 'POST':
+        experiment.delete()
+        return redirect('list_experiments')
+    return render(request, 'delete_experiment.html', {'experiment': experiment})
+
+# Researcher Dashboard View
+@login_required
+def researcher_dashboard(request):
+    experiments = Experiment.objects.all()
+    participants = Participant.objects.all()
+    trials = Trial.objects.all()
+    return render(request, 'researcher_dashboard.html', {
+        'experiments': experiments,
+        'participants': participants,
+        'trials': trials,
+    })
+
+# Register Participant View
+@login_required
+def register_participant(request):
+    if request.method == 'POST':
+        form = RegisterParticipantForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('researcher_dashboard')
+    else:
+        form = RegisterParticipantForm()
+    return render(request, 'register_participant.html', {'form': form})
+
+# Edit Participant View
+@login_required
+def edit_participant(request, participant_id):
+    participant = get_object_or_404(Participant, id=participant_id)
+    if request.method == 'POST':
+        form = RegisterParticipantForm(request.POST, instance=participant)
+        if form.is_valid():
+            form.save()
+            return redirect('researcher_dashboard')
+    else:
+        form = RegisterParticipantForm(instance=participant)
+    return render(request, 'edit_participant.html', {'form': form})
+
+# Delete Participant View
+@login_required
+def delete_participant(request, participant_id):
+    participant = get_object_or_404(Participant, id=participant_id)
+    if request.method == 'POST':
+        participant.delete()
+        return redirect('researcher_dashboard')
+    return render(request, 'delete_participant.html', {'participant': participant})
+
+# Create Trial View
+@login_required
+def create_trial(request):
+    if request.method == 'POST':
+        form = TrialForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('researcher_dashboard')
+    else:
+        form = TrialForm()
+    return render(request, 'create_trial.html', {'form': form})
+
+# Edit Trial View
+@login_required
+def edit_trial(request, trial_id):
+    trial = get_object_or_404(Trial, id=trial_id)
+    if request.method == 'POST':
+        form = TrialForm(request.POST, instance=trial)
+        if form.is_valid():
+            form.save()
+            return redirect('researcher_dashboard')
+    else:
+        form = TrialForm(instance=trial)
+    return render(request, 'edit_trial.html', {'form': form})
+
+# Delete Trial View
+@login_required
+def delete_trial(request, trial_id):
+    trial = get_object_or_404(Trial, id=trial_id)
+    if request.method == 'POST':
+        trial.delete()
+        return redirect('researcher_dashboard')
+    return render(request, 'delete_trial.html', {'trial': trial})
+
 # CSV Export View - Download All Results as Zip
 @login_required
 def download_responses_csv(request):
